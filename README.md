@@ -96,6 +96,5 @@ Tests: 7 passed (10 assertions)
 }
 ---
 
-👨‍💻 **Autor:** [Cássio Franco](https://github.com/CassioFranco)
 📚 **Disciplinas:** Desenvolvimento Web e Qualidade de Software
 📅 **Ano:** 2025
