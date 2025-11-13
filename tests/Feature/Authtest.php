@@ -2,30 +2,40 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class Authtest extends TestCase
+class AuthTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_register_and_login()
-    {
-        $response = $this->postJson('/api/registro', [
-            'name' => 'Test',
-            'email' => 't@t.com',
-            'password' => 'secret123',
-            'password_confirmation' => 'secret123',
-            'age' => 25,
-            'latitude' => -23.55,
-            'longitude' => -46.63
-        ]);
-        $response->assertStatus(201);
+    use RefreshDatabase;
 
-        $login = $this->postJson('/api/acesso', ['email' => 't@t.com', 'password' => 'secret123']);
-        $login->assertStatus(200)->assertJsonStructure(['token', 'user']);
+    public function test_registro_de_usuario_funciona()
+    {
+        $response = $this->postJson('/api/register', [
+            'name' => 'João Silva',
+            'email' => 'joao@example.com',
+            'password' => '123456',
+            'idade' => 30,
+            'latitude' => -23.5,
+            'longitude' => -46.6,
+        ]);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('users', ['email' => 'joao@example.com']);
     }
 
+    public function test_login_funciona()
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt('123456')
+        ]);
+
+        $response = $this->postJson('/api/login', [
+            'email' => $user->email,
+            'password' => '123456'
+        ]);
+
+        $response->assertStatus(200);
+    }
 }

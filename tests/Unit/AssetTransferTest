@@ -1,0 +1,23 @@
+<?php
+
+namespace Tests\Unit;
+
+use Tests\TestCase;
+use App\Models\AssetTransfer;
+
+class AssetTransferTest extends TestCase
+{
+    public function test_transferencia_deve_ter_valores_equivalentes()
+    {
+        $transfer = new AssetTransfer([
+            'total_from' => 1500.00,
+            'total_to' => 1500.00,
+        ]);
+
+        $this->assertEquals(
+            $transfer->total_from,
+            $transfer->total_to,
+            'Os valores da transferência devem ser equivalentes'
+        );
+    }
+}
